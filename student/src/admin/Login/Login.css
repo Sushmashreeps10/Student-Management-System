@@ -1,0 +1,97 @@
+/* Global reset and font setup */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body, html {
+  height: 100%;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #f7f8f9, #527fc8);
+}
+
+/* Centering the login box */
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Styling the box */
+.login-box {
+  background-color: #ffffff;
+  padding: 40px 35px;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+/* Title */
+.login-heading {
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Form layout */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Input and labels */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.form-group label {
+  font-size: 14px;
+  margin-bottom: 6px;
+  color: #555;
+}
+
+.form-group input {
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.form-group input:focus {
+  border-color: #74ebd5;
+  outline: none;
+  box-shadow: 0 0 4px rgba(116, 235, 213, 0.7);
+}
+
+/* Button */
+button {
+  padding: 12px;
+  background-color: #6a11cb;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #5a0eb4;
+}
+
+/* Message display */
+.login-message {
+  margin-top: 20px;
+  color: #444;
+  font-size: 14px;
+}
+ 
