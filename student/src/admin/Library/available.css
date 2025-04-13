@@ -1,0 +1,96 @@
+body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .available-container {
+    padding: 40px;
+    background: #f9f9f9;
+    min-height: 100vh;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #2c3e50;
+  }
+  
+  .available-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+    justify-content: center;
+  }
+  
+  .available-form input {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    min-width: 150px;
+  }
+  
+  .available-form button {
+    background-color: #2980b9;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  .available-form button:hover {
+    background-color: #1f618d;
+  }
+  
+  .available-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .book-item {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .edit-btn {
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .remove-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .edit-btn:hover {
+    background-color: #d68910;
+  }
+  
+  .remove-btn:hover {
+    background-color: #c0392b;
+  }
+  
