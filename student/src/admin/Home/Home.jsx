@@ -5,37 +5,21 @@ import './Home.css';
 const Home = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [libraryOpen, setLibraryOpen] = useState(false);
-  const navigate = useNavigate();
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
 
   const handleProfileClick = (e) => {
     e.stopPropagation();
     setDropdownOpen(!dropdownOpen);
   };
 
-  const handleLogout = () => {
-    navigate('/admin/login');
-  };
-
-  const handleStudentDatabase = () => {
-    navigate('/admin/student-profile');
-  };
-
-  const toggleLibraryDropdown = () => {
-    setLibraryOpen(!libraryOpen);
-  };
-
-  const handleBooksBorrowed = () => {
-    navigate('/admin/library/borrowed');
-  };
-
-  const handleBooksAvailable = () => {
-    navigate('/admin/library/available');  // Navigate to the Books Available page
-  };
-
-  const handleBooksReturned = () => {
-    navigate('/admin/library/returned');
-  };
+  const handleLogout = () => navigate('/admin/login');
+  const handleStudentDatabase = () => navigate('/admin/studentdata/StudentDB');
+  const handleSearchStudentData = () => navigate('/admin/studentdata/search');
+  const handleBooksBorrowed = () => navigate('/admin/library/borrowed');
+  const handleBooksAvailable = () => navigate('/admin/library/available');
+  const handleBooksReturned = () => navigate('/admin/library/returned');
+  const toggleLibraryDropdown = () => setLibraryOpen(!libraryOpen);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -45,9 +29,7 @@ const Home = () => {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   return (
@@ -60,12 +42,11 @@ const Home = () => {
           <li>Time Table</li>
           <li>Exams</li>
 
-          {/* Library dropdown */}
           <li onClick={toggleLibraryDropdown}>Library ⬇</li>
           {libraryOpen && (
             <ul className="library-dropdown">
               <li onClick={handleBooksBorrowed}>Books Borrowed</li>
-              <li onClick={handleBooksAvailable}>Books Available</li>  {/* Add Books Available link */}
+              <li onClick={handleBooksAvailable}>Books Available</li>
               <li onClick={handleBooksReturned}>Books Returned</li>
             </ul>
           )}
@@ -77,35 +58,22 @@ const Home = () => {
         </ul>
       </div>
 
-      {/* Main Content */}
-      <div className="main-content">
-        <div className="navbar">
-          <div className="profile-dropdown" ref={dropdownRef}>
-            <button
-              onClick={handleProfileClick}
-              className="profile-button"
-              aria-label="Profile"
-            >
-              ⬇
-            </button>
-            {dropdownOpen && (
-              <div className="dropdown-menu">
-                <div className="dropdown-item" onClick={handleStudentDatabase}>
-                  <span className="icon">📚</span>
-                  Student Database
-                </div>
-                <div className="dropdown-item" onClick={handleLogout}>
-                  <span className="icon">🚪</span>
-                  Logout
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        <div className="content-body">
-          {/* Add your middle content here if needed */}
-        </div>
+      {/* Profile Dropdown */}
+      <div className="dropdown" id="dropdown-profile" ref={dropdownRef}>
+        <button
+          className="btn btn-secondary dropdown-toggle"
+          type="button"
+          onClick={handleProfileClick}
+        >
+          Profile ⬇
+        </button>
+        {dropdownOpen && (
+          <ul className="dropdown-menu show">
+            <li><a className="dropdown-item" onClick={handleStudentDatabase}>Student-Database</a></li>
+            <li><a className="dropdown-item" onClick={handleSearchStudentData}>Search-StudentData</a></li>
+            <li><a className="dropdown-item" onClick={handleLogout}>Logout</a></li>
+          </ul>
+        )}
       </div>
 
       {/* Footer */}

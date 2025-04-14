@@ -16,46 +16,93 @@ const Available = () => {
   });
 
   const [editingIndex, setEditingIndex] = useState(null);
+  const [errorMsg, setErrorMsg] = useState('');
 
   useEffect(() => {
     localStorage.setItem('availableBooks', JSON.stringify(books));
   }, [books]);
 
   const handleAddOrUpdate = () => {
-    if (!newBook.id || !newBook.name || !newBook.author || !newBook.quantity || !newBook.shelf) return;
+    const { id, name, author, quantity, shelf } = newBook;
+
+    if (!id || !name || !author || !quantity || !shelf) {
+      setErrorMsg('All fields are required.');
+      return;
+    }
+
+    const isDuplicateId = books.some((book, index) => book.id === id && index !== editingIndex);
+    if (isDuplicateId) {
+      setErrorMsg('ID must be unique!');
+      return;
+    }
 
     if (editingIndex !== null) {
       const updatedBooks = [...books];
       updatedBooks[editingIndex] = newBook;
       setBooks(updatedBooks);
-      setEditingIndex(null);
     } else {
       setBooks([...books, newBook]);
     }
 
     setNewBook({ id: '', name: '', author: '', quantity: '', shelf: '' });
+    setEditingIndex(null);
+    setErrorMsg('');
   };
 
   const handleEdit = (index) => {
     setNewBook(books[index]);
     setEditingIndex(index);
+    setErrorMsg('');
   };
 
   const handleRemove = (id) => {
     setBooks(books.filter((book) => book.id !== id));
+    if (editingIndex !== null && books[editingIndex].id === id) {
+      setEditingIndex(null);
+      setNewBook({ id: '', name: '', author: '', quantity: '', shelf: '' });
+    }
   };
 
   return (
     <div className="available-container">
       <h2>Books Available</h2>
 
+      {errorMsg && <p className="error-msg">{errorMsg}</p>}
+
       <div className="available-form">
-        <input type="text" placeholder="ID" value={newBook.id} onChange={(e) => setNewBook({ ...newBook, id: e.target.value })} />
-        <input type="text" placeholder="Book Name" value={newBook.name} onChange={(e) => setNewBook({ ...newBook, name: e.target.value })} />
-        <input type="text" placeholder="Author" value={newBook.author} onChange={(e) => setNewBook({ ...newBook, author: e.target.value })} />
-        <input type="number" placeholder="Available" value={newBook.quantity} onChange={(e) => setNewBook({ ...newBook, quantity: e.target.value })} />
-        <input type="text" placeholder="Shelf Location" value={newBook.shelf} onChange={(e) => setNewBook({ ...newBook, shelf: e.target.value })} />
-        <button onClick={handleAddOrUpdate}>{editingIndex !== null ? 'Update' : 'Add'}</button>
+        <input
+          type="text"
+          placeholder="ID"
+          value={newBook.id}
+          onChange={(e) => setNewBook({ ...newBook, id: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Book Name"
+          value={newBook.name}
+          onChange={(e) => setNewBook({ ...newBook, name: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Author"
+          value={newBook.author}
+          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+        />
+        <input
+          type="number"
+          placeholder="Available"
+          value={newBook.quantity}
+          onChange={(e) => setNewBook({ ...newBook, quantity: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Shelf Location"
+          value={newBook.shelf}
+          onChange={(e) => setNewBook({ ...newBook, shelf: e.target.value })}
+        />
+        <button onClick={handleAddOrUpdate}>
+          {editingIndex !== null ? 'Update' : 'Add'}
+        </button>
       </div>
 
       <div className="available-list">

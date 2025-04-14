@@ -12,6 +12,7 @@ html, body {
   font-family: Arial, sans-serif;
 }
 
+/* Main Container */
 .borrowed-container {
   width: 100vw;
   min-height: 100vh;
@@ -19,12 +20,22 @@ html, body {
   background: #f2f2f2;
 }
 
+/* Header */
 h2 {
   text-align: center;
   margin-bottom: 30px;
   color: #2c3e50;
 }
 
+/* Error Message */
+.error-msg {
+  color: red;
+  text-align: center;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Add Entry Form */
 .add-form {
   display: flex;
   flex-wrap: wrap;
@@ -54,27 +65,59 @@ h2 {
   background-color: #219150;
 }
 
+/* Borrowed List */
 .borrowed-list {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Entry Item Layout */
 .entry-item {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
   background: white;
   padding: 15px;
   border-radius: 8px;
   align-items: center;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  gap: 10px;
 }
 
+.entry-item span {
+  flex: 1;
+  text-align: center;
+  min-width: 100px;
+}
+
+/* Buttons Group */
+.buttons-group {
+  display: flex;
+  gap: 8px;
+}
+
+/* Edit Button */
+.edit-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 4px 10px;
+  font-size: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn:hover {
+  background-color: #2980b9;
+}
+
+/* Remove Button */
 .remove-btn {
   background-color: #e74c3c;
   color: white;
-  padding: 6px 12px;
+  padding: 4px 10px;
+  font-size: 12px;
   border: none;
   border-radius: 6px;
   cursor: pointer;

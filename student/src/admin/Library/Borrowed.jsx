@@ -6,6 +6,7 @@ const Borrowed = () => {
     const saved = localStorage.getItem('borrowedBooks');
     return saved ? JSON.parse(saved) : [];
   });
+
   const [newEntry, setNewEntry] = useState({
     id: '',
     bookName: '',
@@ -14,19 +15,54 @@ const Borrowed = () => {
     borrowedDate: ''
   });
 
+  const [error, setError] = useState('');
+  const [editId, setEditId] = useState(null);
+
   useEffect(() => {
     localStorage.setItem('borrowedBooks', JSON.stringify(entries));
   }, [entries]);
 
-  const handleAdd = () => {
-    if (
-      newEntry.id &&
-      newEntry.bookName &&
-      newEntry.studentName &&
-      newEntry.rollNo &&
-      newEntry.borrowedDate
-    ) {
+  const handleAddOrUpdate = () => {
+    const { id, bookName, studentName, rollNo, borrowedDate } = newEntry;
+
+    if (!id || !bookName || !studentName || !rollNo || !borrowedDate) {
+      setError('All fields are required');
+      return;
+    }
+
+    const isDuplicate = entries.some(entry => entry.id === id);
+    if (isDuplicate && editId === null) {
+      setError('ID must be unique');
+      return;
+    }
+
+    if (editId !== null) {
+      // Editing existing entry
+      const updatedEntries = entries.map(entry =>
+        entry.id === editId ? newEntry : entry
+      );
+      setEntries(updatedEntries);
+      setEditId(null);
+    } else {
+      // Adding new entry
       setEntries([...entries, newEntry]);
+    }
+
+    setNewEntry({
+      id: '',
+      bookName: '',
+      studentName: '',
+      rollNo: '',
+      borrowedDate: ''
+    });
+    setError('');
+  };
+
+  const handleRemove = (id) => {
+    const updated = entries.filter((entry) => entry.id !== id);
+    setEntries(updated);
+    if (editId === id) {
+      setEditId(null);
       setNewEntry({
         id: '',
         bookName: '',
@@ -37,14 +73,19 @@ const Borrowed = () => {
     }
   };
 
-  const handleRemove = (id) => {
-    const updated = entries.filter((entry) => entry.id !== id);
-    setEntries(updated);
+  const handleEdit = (id) => {
+    const entryToEdit = entries.find((entry) => entry.id === id);
+    if (entryToEdit) {
+      setNewEntry(entryToEdit);
+      setEditId(id);
+    }
   };
 
   return (
     <div className="borrowed-container">
       <h2>Books Borrowed</h2>
+
+      {error && <p className="error-msg">{error}</p>}
 
       <div className="add-form">
         <input
@@ -73,11 +114,12 @@ const Borrowed = () => {
         />
         <input
           type="date"
-          placeholder="Borrowed Date"
           value={newEntry.borrowedDate}
           onChange={(e) => setNewEntry({ ...newEntry, borrowedDate: e.target.value })}
         />
-        <button onClick={handleAdd}>Add</button>
+        <button onClick={handleAddOrUpdate}>
+          {editId !== null ? 'Update' : 'Add'}
+        </button>
       </div>
 
       <div className="borrowed-list">
@@ -88,9 +130,10 @@ const Borrowed = () => {
             <span>{entry.studentName}</span>
             <span>{entry.rollNo}</span>
             <span>{entry.borrowedDate}</span>
-            <button className="remove-btn" onClick={() => handleRemove(entry.id)}>
-              Remove
-            </button>
+            <div className="buttons-group">
+              <button className="edit-btn" onClick={() => handleEdit(entry.id)}>Edit</button>
+              <button className="remove-btn" onClick={() => handleRemove(entry.id)}>Remove</button>
+            </div>
           </div>
         ))}
       </div>
