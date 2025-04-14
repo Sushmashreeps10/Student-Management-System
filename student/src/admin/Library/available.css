@@ -10,13 +10,59 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Main Container */
 .available-container {
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  padding: 40px 20px;
   width: 100vw;
-  min-height: 100vh;
-  padding: 40px;
-  background: #f9f9f9;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #27ae60;
+  padding: 10px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo h1 {
+  font-size: 24px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar-links li {
+  list-style-type: none;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
 }
 
 /* Title */
@@ -24,6 +70,14 @@ h2 {
   text-align: center;
   margin-bottom: 30px;
   color: #2c3e50;
+}
+
+/* Error Message */
+.error-msg {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 /* Form */
@@ -105,9 +159,20 @@ h2 {
 .remove-btn:hover {
   background-color: #c0392b;
 }
-.error-msg {
-  color: red;
-  font-size: 14px;
+
+/* Footer */
+.footer {
+  background-color: #27ae60;
+  color: white;
   text-align: center;
-  margin-bottom: 10px;
+  padding: 10px;
+  width: 100vw;
+  position: relative;
+  bottom: 0;
+  margin-top: auto;
+}
+
+.footer p {
+  font-size: 14px;
+  margin: 0;
 }

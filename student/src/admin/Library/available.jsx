@@ -65,6 +65,18 @@ const Available = () => {
 
   return (
     <div className="available-container">
+      {/* Navbar */}
+      <div className="navbar">
+        <div className="navbar-logo">
+          <h1>Book Manager</h1>
+        </div>
+        <ul className="navbar-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="Returned">Returned Books</a></li>
+          <li><a href="Borrowed">Borrowed Books</a></li>
+        </ul>
+      </div>
+
       <h2>Books Available</h2>
 
       {errorMsg && <p className="error-msg">{errorMsg}</p>}
@@ -119,6 +131,11 @@ const Available = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Footer */}
+      <div className="footer">
+        <p>© 2025 Book Manager. All rights reserved.</p>
       </div>
     </div>
   );

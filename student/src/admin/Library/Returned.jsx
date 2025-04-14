@@ -86,6 +86,17 @@ const Returned = () => {
 
   return (
     <div className="returned-container">
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="navbar-logo">
+          <h1>Book Return</h1>
+        </div>
+        <ul className="navbar-links">
+          <li><a href="/">Home</a></li>
+          <li><a href="Borrowed">Borrowed Books</a></li>
+        </ul>
+      </nav>
+
       <div className="form-container">
         <h2>Books Returned</h2>
 
@@ -146,6 +157,11 @@ const Returned = () => {
           ))
         )}
       </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>&copy; 2025 Book Return System. All rights reserved.</p>
+      </footer>
     </div>
   );
 };

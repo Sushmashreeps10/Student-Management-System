@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // For linking to other routes (login, dashboard, etc.)
 import './Borrowed.css';
 
 const Borrowed = () => {
@@ -37,14 +38,12 @@ const Borrowed = () => {
     }
 
     if (editId !== null) {
-      // Editing existing entry
       const updatedEntries = entries.map(entry =>
         entry.id === editId ? newEntry : entry
       );
       setEntries(updatedEntries);
       setEditId(null);
     } else {
-      // Adding new entry
       setEntries([...entries, newEntry]);
     }
 
@@ -83,6 +82,17 @@ const Borrowed = () => {
 
   return (
     <div className="borrowed-container">
+      {/* Navbar */}
+      <nav className="navbar">
+        <div className="navbar-logo">
+          <h1>Library System</h1>
+        </div>
+        <ul className="navbar-links">
+          <li><Link to="/">Home</Link></li>
+          <li><Link to="/admin/login">Log-out</Link></li>
+        </ul>
+      </nav>
+
       <h2>Books Borrowed</h2>
 
       {error && <p className="error-msg">{error}</p>}
@@ -137,6 +147,11 @@ const Borrowed = () => {
           </div>
         ))}
       </div>
+
+      {/* Footer */}
+      <footer className="footer">
+        <p>&copy; 2025 Library System. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 };

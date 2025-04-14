@@ -14,11 +14,11 @@ const Home = () => {
   };
 
   const handleLogout = () => navigate('/admin/login');
-  const handleStudentDatabase = () => navigate('/admin/studentdata/StudentDB');
-  const handleSearchStudentData = () => navigate('/admin/studentdata/search');
-  const handleBooksBorrowed = () => navigate('/admin/library/borrowed');
-  const handleBooksAvailable = () => navigate('/admin/library/available');
-  const handleBooksReturned = () => navigate('/admin/library/returned');
+  const handleStudentDatabase = () => navigate('/admin/Studentdata/StudentDB');
+  const handleSearchStudentData = () => navigate('/admin/Studentdata/Search');
+  const handleBooksBorrowed = () => navigate('/admin/Library/Borrowed');
+  const handleBooksAvailable = () => navigate('/admin/Library/Available');
+  const handleBooksReturned = () => navigate('/admin/Library/Returned');
   const toggleLibraryDropdown = () => setLibraryOpen(!libraryOpen);
 
   useEffect(() => {
@@ -27,7 +27,6 @@ const Home = () => {
         setDropdownOpen(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
@@ -41,7 +40,6 @@ const Home = () => {
           <li>Dashboard</li>
           <li>Time Table</li>
           <li>Exams</li>
-
           <li onClick={toggleLibraryDropdown}>Library ⬇</li>
           {libraryOpen && (
             <ul className="library-dropdown">
@@ -50,7 +48,6 @@ const Home = () => {
               <li onClick={handleBooksReturned}>Books Returned</li>
             </ul>
           )}
-
           <li>Hostel</li>
           <li>Transportation</li>
           <li>Fee Payment</li>
@@ -58,27 +55,31 @@ const Home = () => {
         </ul>
       </div>
 
-      {/* Profile Dropdown */}
-      <div className="dropdown" id="dropdown-profile" ref={dropdownRef}>
-        <button
-          className="btn btn-secondary dropdown-toggle"
-          type="button"
-          onClick={handleProfileClick}
-        >
-          Profile ⬇
-        </button>
-        {dropdownOpen && (
-          <ul className="dropdown-menu show">
-            <li><a className="dropdown-item" onClick={handleStudentDatabase}>Student-Database</a></li>
-            <li><a className="dropdown-item" onClick={handleSearchStudentData}>Search-StudentData</a></li>
-            <li><a className="dropdown-item" onClick={handleLogout}>Logout</a></li>
-          </ul>
-        )}
-      </div>
+      {/* Main Content */}
+      <div className="main-content">
+        <div className="navbar">
+          <div className="profile-section" ref={dropdownRef}>
+            <button className="profile-button" onClick={handleProfileClick}>
+              Profile ⬇
+            </button>
+            {dropdownOpen && (
+              <ul className="dropdown-menu show">
+                <li onClick={handleStudentDatabase}>Student Database</li>
+                <li onClick={handleSearchStudentData}>Search Student Data</li>
+                <li onClick={handleLogout}>Logout</li>
+              </ul>
+            )}
+          </div>
+        </div>
 
-      {/* Footer */}
-      <div className="footer">
-        <p>MyUniversity - All Rights Reserved</p>
+        <div className="content-body">
+          <h1>Welcome to MyUniversity Portal</h1>
+          <p>Select an option from the sidebar to begin.</p>
+        </div>
+
+        <div className="footer">
+          <p>MyUniversity - All Rights Reserved © 2025</p>
+        </div>
       </div>
     </div>
   );

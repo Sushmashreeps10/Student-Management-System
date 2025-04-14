@@ -1,186 +1,110 @@
-/* Fullscreen Layout */
+/* Base Styles */
 html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #ffffff;
+  background-color: #f9fafb;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Main Container */
-.student-db-container {
-  font-family: Arial, sans-serif;
-  background-color: #ffffff;
-  padding: 40px 20px;
-  width: 100vw;
-  height: 100vh;
-  box-sizing: border-box;
+
+/* Navbar */
+.navbar {
+  background-color: #2563eb;
+  padding: 1rem 2rem;
+  color: white;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  overflow-y: auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Container */
+.student-db-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
 }
 
 /* Header */
 .header {
-  font-size: 2.8rem;
+  font-size: 2.5rem;
   color: #1e3a8a;
-  margin-bottom: 30px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 600;
+  margin-top: 3rem;
 }
 
-/* Student Form - Horizontal Layout */
+/* Form */
 .student-form {
-  background-color: #f9f9f9;
-  padding: 30px 40px;
+  background-color: #ffffff;
+  padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap; /* Prevent wrapping to ensure all fields are in one line */
-  gap: 20px;
-  justify-content: space-between;
-  align-items: center; /* Ensure everything is centered vertically */
-  margin-bottom: 40px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2.5rem;
 }
 
-/* Input Arrangement - Horizontal Fields */
 .input-container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap; /* Ensure the fields don't wrap */
-  gap: 20px;
-  width: 100%;
+  gap: 1.5rem;
+  flex-wrap: wrap;
   justify-content: space-between;
-  align-items: center; /* Align all items vertically */
 }
 
 .input-field {
-  flex: 1 1 180px; /* Ensure they share the available space, but don't grow too large */
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  flex: 1 1 200px;
+  padding: 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
   font-size: 1rem;
-  min-width: 150px;
 }
 
-select.input-field {
-  width: 100%;
-}
-
-/* Branch Button */
-.branch-btn {
-  background-color: #3b82f6;
-  color: white;
-  font-size: 1rem;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  min-width: 150px;
-}
-
-.branch-btn:hover {
-  background-color: #2563eb;
-}
-
-/* Spinner Styles */
-.spinner {
-  background: white;
-  border: 1px solid #ddd;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 10px;
-  width: 100%;
-  max-width: 200px;
-  z-index: 10;
-}
-
-.branch-option {
-  background-color: #525c67;
-  border: none;
-  padding: 10px;
-  text-align: left;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  border-radius: 5px;
-}
-
-.branch-option:hover {
-  background-color: #cbd5e1;
-}
-
-/* Add Button */
+/* Buttons */
 .add-btn {
-  padding: 14px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 6px;
   background-color: #10b981;
   color: white;
+  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  min-width: 150px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 }
 
 .add-btn:hover {
   background-color: #059669;
 }
 
-/* Table Layout */
-.student-table {
-  width: 100%;
-  max-width: 1100px;
-  overflow-x: auto;
-}
-
-.student-table table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.student-table th,
-.student-table td {
-  padding: 16px;
-  border: 1px solid #ddd;
-  text-align: left;
-}
-
-.student-table th {
-  background-color: #3b82f6;
-  color: white;
-}
-
-.student-table tr:nth-child(even) {
-  background-color: #f3f4f6;
-}
-
-.student-table tr:hover {
-  background-color: #e5e7eb;
-}
-
-/* Action Buttons */
 .edit-btn,
 .remove-btn {
-  padding: 8px 14px;
-  border-radius: 5px;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
   font-size: 0.9rem;
   color: white;
   cursor: pointer;
   border: none;
+  margin-right: 0.4rem;
 }
 
 .edit-btn {
-  background-color: #22c55e;
+  background-color: #3b82f6;
 }
 
 .edit-btn:hover {
-  background-color: #16a34a;
+  background-color: #2563eb;
 }
 
 .remove-btn {
@@ -191,17 +115,43 @@ select.input-field {
   background-color: #dc2626;
 }
 
+/* Table */
+.student-table {
+  overflow-x: auto;
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+}
+
+.student-table table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 700px;
+}
+
+.student-table th,
+.student-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  text-align: left;
+}
+
+.student-table th {
+  background-color: #1d4ed8;
+  color: white;
+}
+
+.student-table tr:nth-child(even) {
+  background-color: #f1f5f9;
+}
+
 /* Footer */
 .footer {
-  margin-top: auto;
-  padding: 10px;
   text-align: center;
-  font-size: 14px;
-  color: #777;
-}
-.error-message {
-  color: #ef4444;
-  font-size: 1rem;
-  margin-top: 10px;
-  font-weight: bold;
+  padding: 1rem 2rem;
+  margin-top: 3rem;
+  background-color: #f1f5f9;
+  font-size: 0.9rem;
+  color: #6b7280;
 }

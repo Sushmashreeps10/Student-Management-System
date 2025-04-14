@@ -10,6 +10,8 @@ html, body {
   width: 100%;
   overflow-x: hidden;
   font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Main Container */
@@ -18,11 +20,52 @@ html, body {
   min-height: 100vh;
   padding: 40px;
   background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #27ae60;
+  padding: 10px 20px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-logo h1 {
+  font-size: 24px;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 15px;
+}
+
+.navbar-links li {
+  list-style-type: none;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
 }
 
 /* Header */
 h2 {
   text-align: center;
+  margin-top: 30px;
   margin-bottom: 30px;
   color: #2c3e50;
 }
@@ -125,4 +168,20 @@ h2 {
 
 .remove-btn:hover {
   background-color: #c0392b;
+}
+
+/* Footer */
+.footer {
+  background-color: #27ae60;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  width: 100vw;
+  position: relative;
+  bottom: 0;
+  
+}
+
+.footer p {
+  font-size: 14px;
 }
