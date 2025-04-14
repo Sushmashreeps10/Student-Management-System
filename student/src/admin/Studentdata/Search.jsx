@@ -1,22 +1,24 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './Search.css';
 
 const Search = () => {
   const [selectedBranch, setSelectedBranch] = useState('');
   const [filteredStudents, setFilteredStudents] = useState([]);
-  const [allStudents] = useState([
-    { id: 1, name: 'Aarav', roll: '21CS101', branch: 'CSE', year: 2 },
-    { id: 2, name: 'Divya', roll: '21EC105', branch: 'ECE', year: 1 },
-    { id: 3, name: 'Kiran', roll: '21ME202', branch: 'MEC', year: 3 },
-    { id: 4, name: 'Sneha', roll: '21CS109', branch: 'CSE', year: 4 },
-    { id: 5, name: 'Ankit', roll: '21CV101', branch: 'CIVIL', year: 2 },
-  ]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const branches = ['CSE', 'ECE', 'MEC', 'CIVIL', 'Allied CSE'];
 
-  const handleSearch = () => {
-    const filtered = allStudents.filter(student => student.branch === selectedBranch);
-    setFilteredStudents(filtered);
+  const handleSearch = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/student/branch/${selectedBranch}`);
+      setFilteredStudents(response.data);
+      setErrorMessage('');
+    } catch (error) {
+      console.error('Error fetching students:', error);
+      setFilteredStudents([]);
+      setErrorMessage('Something went wrong while fetching students.');
+    }
   };
 
   return (
@@ -70,18 +72,21 @@ const Search = () => {
                 <tr key={student.id}>
                   <td>{student.id}</td>
                   <td>{student.name}</td>
-                  <td>{student.roll}</td>
+                  <td>{student.rollNo}</td> {/* ✅ Corrected here */}
                   <td>{student.branch}</td>
                   <td>{student.year}</td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         )}
 
-        {selectedBranch && filteredStudents.length === 0 && (
+        {selectedBranch && filteredStudents.length === 0 && !errorMessage && (
           <p className="no-results">No students found in {selectedBranch}.</p>
         )}
+
+        {errorMessage && <p className="no-results">{errorMessage}</p>}
       </div>
 
       {/* Footer */}

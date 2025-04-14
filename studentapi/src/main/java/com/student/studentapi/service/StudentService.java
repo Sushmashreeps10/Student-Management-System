@@ -35,4 +35,9 @@ public class StudentService {
             return studentRepository.save(student);
         });
     }
+
+    public List<Student> getStudentsByBranch(String branch) {
+        return studentRepository.findByBranchIgnoreCase(branch);
+    }
+    
 }

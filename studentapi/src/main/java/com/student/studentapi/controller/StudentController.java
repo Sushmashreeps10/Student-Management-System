@@ -35,4 +35,10 @@ public class StudentController {
     public Optional<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         return studentService.updateStudent(id, student);
     }
+
+    @GetMapping("/branch/{branch}")
+    public List<Student> getStudentsByBranch(@PathVariable String branch) {
+    return studentService.getStudentsByBranch(branch);
+}
+
 }
