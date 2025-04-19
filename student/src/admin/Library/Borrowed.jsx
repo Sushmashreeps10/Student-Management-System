@@ -1,82 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // For linking to other routes (login, dashboard, etc.)
-import './Borrowed.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./Borrowed.css"; // Optional: your custom styles
 
 const Borrowed = () => {
-  const [entries, setEntries] = useState(() => {
-    const saved = localStorage.getItem('borrowedBooks');
-    return saved ? JSON.parse(saved) : [];
+  const [borrowedList, setBorrowedList] = useState([]);
+  const [formData, setFormData] = useState({
+    id: "",
+    bookName: "",
+    studentName: "",
+    rollNo: "",
+    borrowedDate: "",
   });
 
-  const [newEntry, setNewEntry] = useState({
-    id: '',
-    bookName: '',
-    studentName: '',
-    rollNo: '',
-    borrowedDate: ''
-  });
-
-  const [error, setError] = useState('');
-  const [editId, setEditId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem('borrowedBooks', JSON.stringify(entries));
-  }, [entries]);
+    fetchBorrowedBooks();
+  }, []);
 
-  const handleAddOrUpdate = () => {
-    const { id, bookName, studentName, rollNo, borrowedDate } = newEntry;
-
-    if (!id || !bookName || !studentName || !rollNo || !borrowedDate) {
-      setError('All fields are required');
-      return;
+  const fetchBorrowedBooks = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/borrowed/getAllBorrowed");
+      setBorrowedList(res.data);
+    } catch (err) {
+      console.error("Error fetching data:", err);
     }
+  };
 
-    const isDuplicate = entries.some(entry => entry.id === id);
-    if (isDuplicate && editId === null) {
-      setError('ID must be unique');
-      return;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isEditing) {
+        await axios.put(`http://localhost:8080/borrowed/edit/${formData.id}`, formData);
+      } else {
+        await axios.post("http://localhost:8080/borrowed/addBorrowed", formData);
+      }
+
+      fetchBorrowedBooks();
+      setFormData({ id: "", bookName: "", studentName: "", rollNo: "", borrowedDate: "" });
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Error saving data:", err);
+      alert("Failed to save book. See console for details.");
     }
+  };
 
-    if (editId !== null) {
-      const updatedEntries = entries.map(entry =>
-        entry.id === editId ? newEntry : entry
-      );
-      setEntries(updatedEntries);
-      setEditId(null);
-    } else {
-      setEntries([...entries, newEntry]);
-    }
-
-    setNewEntry({
-      id: '',
-      bookName: '',
-      studentName: '',
-      rollNo: '',
-      borrowedDate: ''
+  const handleEdit = (book) => {
+    setFormData({
+      id: book.id,
+      bookName: book.bookName,
+      studentName: book.studentName,
+      rollNo: book.rollNo,
+      borrowedDate: book.borrowedDate,
     });
-    setError('');
+    setIsEditing(true);
   };
 
-  const handleRemove = (id) => {
-    const updated = entries.filter((entry) => entry.id !== id);
-    setEntries(updated);
-    if (editId === id) {
-      setEditId(null);
-      setNewEntry({
-        id: '',
-        bookName: '',
-        studentName: '',
-        rollNo: '',
-        borrowedDate: ''
-      });
-    }
-  };
-
-  const handleEdit = (id) => {
-    const entryToEdit = entries.find((entry) => entry.id === id);
-    if (entryToEdit) {
-      setNewEntry(entryToEdit);
-      setEditId(id);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8080/borrowed/delete/${id}`);
+      fetchBorrowedBooks();
+    } catch (err) {
+      console.error("Error deleting:", err);
     }
   };
 
@@ -84,73 +74,88 @@ const Borrowed = () => {
     <div className="borrowed-container">
       {/* Navbar */}
       <nav className="navbar">
-        <div className="navbar-logo">
-          <h1>Library System</h1>
-        </div>
+        <div className="navbar-brand">University Library</div>
         <ul className="navbar-links">
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/admin/login">Log-out</Link></li>
+          <a href="/admin/home"><li>Home</li></a>
+          <a href="/admin/library/available"><li>Available</li></a>
+          <a href="/admin/library/returned"><li>Returned</li></a>
         </ul>
       </nav>
 
-      <h2>Books Borrowed</h2>
-
-      {error && <p className="error-msg">{error}</p>}
-
-      <div className="add-form">
-        <input
-          type="text"
-          placeholder="ID"
-          value={newEntry.id}
-          onChange={(e) => setNewEntry({ ...newEntry, id: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Book Name"
-          value={newEntry.bookName}
-          onChange={(e) => setNewEntry({ ...newEntry, bookName: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Student Name"
-          value={newEntry.studentName}
-          onChange={(e) => setNewEntry({ ...newEntry, studentName: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Roll No"
-          value={newEntry.rollNo}
-          onChange={(e) => setNewEntry({ ...newEntry, rollNo: e.target.value })}
-        />
-        <input
-          type="date"
-          value={newEntry.borrowedDate}
-          onChange={(e) => setNewEntry({ ...newEntry, borrowedDate: e.target.value })}
-        />
-        <button onClick={handleAddOrUpdate}>
-          {editId !== null ? 'Update' : 'Add'}
-        </button>
+      {/* Form */}
+      <div className="form-section">
+        <h2>{isEditing ? "Update Borrowed Book" : "Add Borrowed Book"}</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            name="bookName"
+            type="text"
+            placeholder="Book Name"
+            value={formData.bookName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="studentName"
+            type="text"
+            placeholder="Student Name"
+            value={formData.studentName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="rollNo"
+            type="text"
+            placeholder="Roll No"
+            value={formData.rollNo}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="borrowedDate"
+            type="date"
+            value={formData.borrowedDate}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">{isEditing ? "Update" : "Add"}</button>
+        </form>
       </div>
 
-      <div className="borrowed-list">
-        {entries.map((entry) => (
-          <div key={entry.id} className="entry-item">
-            <span>{entry.id}</span>
-            <span>{entry.bookName}</span>
-            <span>{entry.studentName}</span>
-            <span>{entry.rollNo}</span>
-            <span>{entry.borrowedDate}</span>
-            <div className="buttons-group">
-              <button className="edit-btn" onClick={() => handleEdit(entry.id)}>Edit</button>
-              <button className="remove-btn" onClick={() => handleRemove(entry.id)}>Remove</button>
-            </div>
-          </div>
-        ))}
+      {/* Table */}
+      <div className="table-section">
+        <h3>Borrowed Books List</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Book Name</th>
+              <th>Student Name</th>
+              <th>Roll No</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {borrowedList.map((book) => (
+              <tr key={book.id}>
+                <td>{book.id}</td>
+                <td>{book.bookName}</td>
+                <td>{book.studentName}</td>
+                <td>{book.rollNo}</td>
+                <td>{book.borrowedDate}</td>
+                <td>
+                  <button onClick={() => handleEdit(book)}>Edit</button>
+                  <button onClick={() => handleDelete(book.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Footer */}
       <footer className="footer">
-        <p>&copy; 2025 Library System. All Rights Reserved.</p>
+        <p>© 2025 Presidency University Library System</p>
       </footer>
     </div>
   );

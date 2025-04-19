@@ -9,9 +9,16 @@ html, body {
 
 /* Main container layout */
 .home-container {
-  display: flex;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  padding: 40px 20px;
+  width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
 }
 
 /* Sidebar styles */

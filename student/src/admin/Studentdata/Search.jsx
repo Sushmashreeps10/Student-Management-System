@@ -27,7 +27,7 @@ const Search = () => {
       <div className="navbar">
         <h1 className="navbar-title">StudentDB</h1>
         <div className="navbar-links">
-          <a href="/">Home</a>
+          <a href="/admin/Home">Home</a>
           <a href="StudentDB">Add Student</a>
           <a href="/admin/Login">Log-out</a>
         </div>

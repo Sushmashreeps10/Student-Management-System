@@ -2,19 +2,20 @@ package com.student.studentapi.controller;
 
 import com.student.studentapi.model.Student;
 import com.student.studentapi.service.StudentService;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/student")
 @CrossOrigin("*")
 public class StudentController {
 
-    private final StudentService studentService;
+    @Autowired
+    private StudentService studentService;
 
     @PostMapping("/addStudent")
     public Student addStudent(@RequestBody Student student) {
@@ -31,6 +32,8 @@ public class StudentController {
         studentService.deleteStudent(id);
     }
 
+    // student/edit/
+
     @PutMapping("/edit/{id}")
     public Optional<Student> editStudent(@PathVariable Long id, @RequestBody Student student) {
         return studentService.updateStudent(id, student);
@@ -38,7 +41,7 @@ public class StudentController {
 
     @GetMapping("/branch/{branch}")
     public List<Student> getStudentsByBranch(@PathVariable String branch) {
-    return studentService.getStudentsByBranch(branch);
-}
+        return studentService.getStudentsByBranch(branch);
+    }
 
 }

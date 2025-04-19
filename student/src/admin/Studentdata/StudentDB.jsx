@@ -6,7 +6,7 @@ const Navbar = () => (
   <nav className="navbar">
     <div className="navbar-brand">🎓 StudentDB</div>
     <ul className="navbar-links">
-      <li><a href="/">Home</a></li>
+      <li><a href="/admin/Home">Home</a></li>
       <li><a href="Search">Search Student</a></li>
     </ul>
   </nav>
