@@ -1,83 +1,41 @@
-/* General Styling */
-body {
-  font-family: 'Arial', sans-serif;
-  background: linear-gradient(to right, #6a11cb, #2575fc);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
-}
-
-.register-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Common styles for inputs and selects */
+.form-group input,
+.form-group select {
   width: 100%;
+  padding: 14px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.register-card {
-  background-color: white;
-  border-radius: 10px;
-  padding: 40px 30px;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-}
-
-.title {
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
-  font-weight: bold;
-  color: #2575fc;
-}
-
-.form-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.input-field,
-.select-field {
-  padding: 12px;
-  font-size: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+/* Focus state for input and select */
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #527fc8;
   outline: none;
-  transition: border 0.3s ease;
+  box-shadow: 0 0 5px rgba(82, 127, 200, 0.4);
 }
 
-.input-field:focus,
-.select-field:focus {
-  border-color: #2575fc;
+/* Optional: Style the select dropdown arrow for consistency */
+.form-group select {
+  appearance: none; /* Remove default arrow in most browsers */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'14'%20height%3D'10'%20viewBox%3D'0%200%2014%2010'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M1%201l6%206%206-6'%20stroke%3D'%23333'%20stroke-width%3D'2'%20fill%3D'none'%20fill-rule%3D'evenodd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
 }
 
-.submit-btn {
-  background-color: #2575fc;
-  color: white;
-  padding: 12px;
-  font-size: 1.1rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+/* Ensure spacing between elements on small screens */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 30px 20px;
+  }
 
-.submit-btn:hover {
-  background-color: #6a11cb;
-}
-
-.message {
-  margin-top: 20px;
-  color: #f44336;
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-input[type="email"]:focus,
-input[type="password"]:focus {
-  background-color: #f1f1f1;
+  .form-group input,
+  .form-group select {
+    font-size: 15px;
+    padding: 12px;
+  }
 }

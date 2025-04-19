@@ -7,30 +7,6 @@ html, body, #root {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
-/* Navbar */
-.navbar {
-  background-color: #2563eb;
-  padding: 1rem 2rem;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-links {
-  list-style: none;
-  display: flex;
-  gap: 1.5rem;
-}
-
-.navbar-links a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
-}
-
 /* Container */
 .student-db-container {
   padding: 2rem;
@@ -146,12 +122,3 @@ html, body, #root {
   background-color: #f1f5f9;
 }
 
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 1rem 2rem;
-  margin-top: 3rem;
-  background-color: #f1f5f9;
-  font-size: 0.9rem;
-  color: #6b7280;
-}

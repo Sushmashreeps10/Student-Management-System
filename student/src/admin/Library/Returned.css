@@ -1,176 +1,109 @@
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html, body {
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
-  background-color: #f2f2f2;
-}
-
-/* Navbar */
-.navbar {
-  background-color: #27ae60;
-  padding: 10px 20px;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.navbar-logo h1 {
-  font-size: 24px;
-}
-
-.navbar-links {
-  display: flex;
-  gap: 15px;
-}
-
-.navbar-links li {
-  list-style-type: none;
-}
-
-.navbar-links a {
-  color: white;
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.navbar-links a:hover {
-  text-decoration: underline;
-}
-
-/* Main Container */
 .returned-container {
-  width: 100vw;
-  min-height: 100vh;
-  padding: 40px;
-  background: #fff;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  background-color: #f4f4f4;
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-/* Heading */
-h2 {
-  text-align: center;
-  margin-bottom: 30px;
-  color: #2c3e50;
+.form-container {
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Add Form */
-.add-form {
+.form-container h2 {
+  /* margin-bottom: 15px; */
+  margin-top: 5vh;
+  color: #05467f;
+  block-size: 10vh;
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
   justify-content: center;
 }
 
+.add-form {
+  display: flex;
+  justify-content: space-between; /* Spread inputs across the line */
+  max-width: 900px; /* Make sure the form can fit comfortably */
+  margin: 0 auto;
+}
+
 .add-form input {
-  padding: 10px;
-  font-size: 14px;
+  padding: 8px;
+  margin: 6px;
+  width: 20%; /* Make inputs take up 20% of the form's width */
+  max-width: 150px; /* Limit input width */
+  border-radius: 5px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  min-width: 150px;
+  font-size: 14px;
 }
 
 .add-form button {
-  background-color: #27ae60;
-  color: white;
   padding: 10px 20px;
+  margin-top: 15px;
+  background-color: #4CAF50;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
 }
 
 .add-form button:hover {
-  background-color: #219150;
+  background-color: #45a049;
 }
 
-/* List of Entries */
+.error-msg {
+  color: red;
+  font-size: 14px;
+}
+
 .entries-container {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  overflow-y: auto;
-  max-height: calc(100vh - 250px); /* Leave space for form + heading */
+  margin-top: 20px;
 }
 
-/* Each Entry */
 .entry-item {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr); /* ID, Book Name, Student Name, Roll No, Returned Date, Buttons */
-  gap: 10px;
-  background: #ffffff;
-  padding: 15px;
-  border-radius: 8px;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #fff;
+  margin: 10px 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .entry-item span {
+  flex: 1;
   text-align: center;
 }
 
-/* Buttons */
-.edit-btn,
-.remove-btn {
-  background-color: #3498db;
+.entry-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.entry-buttons button {
+  padding: 5px 10px;
+  background-color: #2196F3;
   color: white;
-  padding: 6px 12px;
   border: none;
-  border-radius: 6px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 14px;
 }
 
-.edit-btn:hover {
-  background-color: #2c80b4;
+.entry-buttons button:hover {
+  background-color: #1e88e5;
 }
 
 .remove-btn {
-  background-color: #e74c3c;
-  margin-left: 5px;
+  background-color: #f44336;
 }
 
 .remove-btn:hover {
-  background-color: #c0392b;
+  background-color: #e53935;
 }
 
-/* Error Message */
-.error-msg {
-  color: red;
+.empty-msg {
+  font-size: 16px;
+  color: #555;
   text-align: center;
-  font-size: 14px;
-  margin-bottom: 10px;
-}
-
-/* Footer */
-.footer {
-  background-color: #27ae60;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  width: 100vw;
-  position: relative;
-  bottom: 0;
-  margin-top: auto;
-}
-
-.footer p {
-  font-size: 14px;
-  margin: 0;
 }

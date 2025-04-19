@@ -1,22 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './StudentDB.css';
-
-const Navbar = () => (
-  <nav className="navbar">
-    <div className="navbar-brand">🎓 StudentDB</div>
-    <ul className="navbar-links">
-      <li><a href="/admin/Home">Home</a></li>
-      <li><a href="Search">Search Student</a></li>
-    </ul>
-  </nav>
-);
-
-const Footer = () => (
-  <footer className="footer">
-    <p>&copy; {new Date().getFullYear()} StudentDB — Powered by Sushmashree 💼</p>
-  </footer>
-);
+import Navbar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
 
 const StudentDB = () => {
   const [students, setStudents] = useState([]);
@@ -67,7 +53,7 @@ const StudentDB = () => {
   };
 
   return (
-    <>
+    <div>
       <Navbar />
       <div className="student-db-container">
         <h1 className="header" id="add">Student Database Form</h1>
@@ -118,7 +104,7 @@ const StudentDB = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

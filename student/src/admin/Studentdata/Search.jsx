@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Search.css';
+import Navbar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
 
 const Search = () => {
   const [selectedBranch, setSelectedBranch] = useState('');
@@ -24,14 +26,7 @@ const Search = () => {
   return (
     <div className="search-wrapper">
       {/* Navbar */}
-      <div className="navbar">
-        <h1 className="navbar-title">StudentDB</h1>
-        <div className="navbar-links">
-          <a href="/admin/Home">Home</a>
-          <a href="StudentDB">Add Student</a>
-          <a href="/admin/Login">Log-out</a>
-        </div>
-      </div>
+      <Navbar/>
 
       {/* Main Content */}
       <div className="search-container">
@@ -90,9 +85,7 @@ const Search = () => {
       </div>
 
       {/* Footer */}
-      <div className="footer">
-        <p>© 2025 StudentDB. All rights reserved.</p>
-      </div>
+      <Footer/>
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Borrowed.css"; // Optional: your custom styles
+import Navbar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
+
 
 const Borrowed = () => {
   const [borrowedList, setBorrowedList] = useState([]);
@@ -73,14 +76,7 @@ const Borrowed = () => {
   return (
     <div className="borrowed-container">
       {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-brand">University Library</div>
-        <ul className="navbar-links">
-          <a href="/admin/home"><li>Home</li></a>
-          <a href="/admin/library/available"><li>Available</li></a>
-          <a href="/admin/library/returned"><li>Returned</li></a>
-        </ul>
-      </nav>
+      <Navbar/>
 
       {/* Form */}
       <div className="form-section">
@@ -154,9 +150,7 @@ const Borrowed = () => {
       </div>
 
       {/* Footer */}
-      <footer className="footer">
-        <p>© 2025 Presidency University Library System</p>
-      </footer>
+      <Footer/>
     </div>
   );
 };

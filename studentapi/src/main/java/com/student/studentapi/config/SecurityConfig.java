@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // Disable CSRF for testing APIs with Postman
                 .authorizeHttpRequests(auth -> auth
                                 // Public access for register, login, and student routes
-                                .requestMatchers("/api/users/register", "/api/users/login", "/student/**", "/borrowed/**").permitAll()
+                                .requestMatchers("/api/users/register", "/api/users/login", "/student/**", "/borrowed/**", "/available/**","/returned/**").permitAll()
 
                                 // DELETE method for /api/borrowed/** requires authentication
                                 .requestMatchers(HttpMethod.DELETE, "/api/borrowed/**").authenticated()

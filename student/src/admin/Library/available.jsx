@@ -1,142 +1,164 @@
 import React, { useState, useEffect } from 'react';
 import './available.css';
+import Navbar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
 
 const Available = () => {
-  const [books, setBooks] = useState(() => {
-    const saved = localStorage.getItem('availableBooks');
-    return saved ? JSON.parse(saved) : [];
+  const [availableBooks, setAvailableBooks] = useState([]);
+  const [formData, setFormData] = useState({
+    id: "",
+    bookName: "",
+    quantity: "",
+    shelf: "",
   });
 
-  const [newBook, setNewBook] = useState({
-    id: '',
-    name: '',
-    author: '',
-    quantity: '',
-    shelf: ''
-  });
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [editingIndex, setEditingIndex] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
+  // ✅ Backend URL (change if needed)
+  const BASE_URL = "http://localhost:8080/available";
 
   useEffect(() => {
-    localStorage.setItem('availableBooks', JSON.stringify(books));
-  }, [books]);
+    fetch(`${BASE_URL}/getAllAvailable`)
+      .then(res => res.json())
+      .then(data => setAvailableBooks(data))
+      .catch(err => console.error("Failed to fetch data", err));
+  }, []);
 
-  const handleAddOrUpdate = () => {
-    const { id, name, author, quantity, shelf } = newBook;
-
-    if (!id || !name || !author || !quantity || !shelf) {
-      setErrorMsg('All fields are required.');
-      return;
-    }
-
-    const isDuplicateId = books.some((book, index) => book.id === id && index !== editingIndex);
-    if (isDuplicateId) {
-      setErrorMsg('ID must be unique!');
-      return;
-    }
-
-    if (editingIndex !== null) {
-      const updatedBooks = [...books];
-      updatedBooks[editingIndex] = newBook;
-      setBooks(updatedBooks);
-    } else {
-      setBooks([...books, newBook]);
-    }
-
-    setNewBook({ id: '', name: '', author: '', quantity: '', shelf: '' });
-    setEditingIndex(null);
-    setErrorMsg('');
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleEdit = (index) => {
-    setNewBook(books[index]);
-    setEditingIndex(index);
-    setErrorMsg('');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const payload = {
+      bookName: formData.bookName,
+      quantity: formData.quantity,
+      shelf: formData.shelf
+    };
+
+    try {
+      if (isEditing) {
+        await fetch(`${BASE_URL}/edit/${formData.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        await fetch(`${BASE_URL}/addAvailable`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      }
+
+      // Refresh book list
+      const updated = await fetch(`${BASE_URL}/getAllAvailable`).then(res => res.json());
+      setAvailableBooks(updated);
+      setFormData({ id: "", bookName: "", quantity: "", shelf: "" });
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error in form submission", error);
+    }
   };
 
-  const handleRemove = (id) => {
-    setBooks(books.filter((book) => book.id !== id));
-    if (editingIndex !== null && books[editingIndex].id === id) {
-      setEditingIndex(null);
-      setNewBook({ id: '', name: '', author: '', quantity: '', shelf: '' });
+  const handleEdit = (book) => {
+    setFormData({
+      id: book.id,
+      bookName: book.bookName,
+      quantity: book.quantity,
+      shelf: book.shelf,
+    });
+    setIsEditing(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`${BASE_URL}/delete/${id}`, {
+        method: "DELETE",
+      });
+      const updated = await fetch(`${BASE_URL}/getAllAvailable`).then(res => res.json());
+      setAvailableBooks(updated);
+    } catch (error) {
+      console.error("Error deleting book", error);
     }
   };
 
   return (
     <div className="available-container">
-      {/* Navbar */}
-      <div className="navbar">
-        <div className="navbar-logo">
-          <h1>Book Manager</h1>
-        </div>
-        <ul className="navbar-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="Returned">Returned Books</a></li>
-          <li><a href="Borrowed">Borrowed Books</a></li>
-        </ul>
+      <Navbar />
+
+      <div className="form-section">
+        <h2>{isEditing ? "Update Available Book" : "Add Available Book"}</h2>
+        <form onSubmit={handleSubmit}>
+          {isEditing && (
+            <input
+              name="id"
+              type="text"
+              placeholder="ID (auto)"
+              value={formData.id}
+              readOnly
+            />
+          )}
+          <input
+            name="bookName"
+            type="text"
+            placeholder="Book Name"
+            value={formData.bookName}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="quantity"
+            type="number"
+            placeholder="Quantity"
+            value={formData.quantity}
+            onChange={handleChange}
+            required
+          />
+          <input
+            name="shelf"
+            type="text"
+            placeholder="Shelf Location"
+            value={formData.shelf}
+            onChange={handleChange}
+            required
+          />
+          <button type="submit">{isEditing ? "Update" : "Add"}</button>
+        </form>
       </div>
 
-      <h2>Books Available</h2>
-
-      {errorMsg && <p className="error-msg">{errorMsg}</p>}
-
-      <div className="available-form">
-        <input
-          type="text"
-          placeholder="ID"
-          value={newBook.id}
-          onChange={(e) => setNewBook({ ...newBook, id: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Book Name"
-          value={newBook.name}
-          onChange={(e) => setNewBook({ ...newBook, name: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Author"
-          value={newBook.author}
-          onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
-        />
-        <input
-          type="number"
-          placeholder="Available"
-          value={newBook.quantity}
-          onChange={(e) => setNewBook({ ...newBook, quantity: e.target.value })}
-        />
-        <input
-          type="text"
-          placeholder="Shelf Location"
-          value={newBook.shelf}
-          onChange={(e) => setNewBook({ ...newBook, shelf: e.target.value })}
-        />
-        <button onClick={handleAddOrUpdate}>
-          {editingIndex !== null ? 'Update' : 'Add'}
-        </button>
+      <div className="table-section">
+        <h3>Available Books List</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Book Name</th>
+              <th>Quantity</th>
+              <th>Shelf</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {availableBooks.map((book) => (
+              <tr key={book.id}>
+                <td>{book.id}</td>
+                <td>{book.bookName}</td>
+                <td>{book.quantity}</td>
+                <td>{book.shelf}</td>
+                <td>
+                  <button onClick={() => handleEdit(book)}>Edit</button>
+                  <button onClick={() => handleDelete(book.id)}>Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
-      <div className="available-list">
-        {books.map((book, index) => (
-          <div key={book.id} className="book-item">
-            <span>{book.id}</span>
-            <span>{book.name}</span>
-            <span>{book.author}</span>
-            <span>{book.quantity}</span>
-            <span>{book.shelf}</span>
-            <div className="action-buttons">
-              <button className="edit-btn" onClick={() => handleEdit(index)}>Edit</button>
-              <button className="remove-btn" onClick={() => handleRemove(book.id)}>Remove</button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Footer */}
-      <div className="footer">
-        <p>© 2025 Book Manager. All rights reserved.</p>
-      </div>
+      <Footer />
     </div>
   );
 };

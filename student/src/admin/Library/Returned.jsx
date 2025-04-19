@@ -1,167 +1,156 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './Returned.css';
+import Navbar from '../../Components/NavBar';
+import Footer from '../../Components/Footer';
 
 const Returned = () => {
-  const [entries, setEntries] = useState(() => {
-    const saved = localStorage.getItem('returnedBooks');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [newEntry, setNewEntry] = useState({
+  const [entries, setEntries] = useState([]);
+  const [formData, setFormData] = useState({
     id: '',
     bookName: '',
     studentName: '',
     rollNo: '',
-    returnedDate: ''
+    returnedDate: '',
   });
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [editingId, setEditingId] = useState(null);
-  const [errorMsg, setErrorMsg] = useState('');
+  const apiUrl = 'http://localhost:8080/returned';
 
   useEffect(() => {
-    localStorage.setItem('returnedBooks', JSON.stringify(entries));
-  }, [entries]);
+    fetchEntries();
+  }, []);
 
-  const handleAddOrUpdate = () => {
-    const { id, bookName, studentName, rollNo, returnedDate } = newEntry;
-
-    if (!id || !bookName || !studentName || !rollNo || !returnedDate) {
-      setErrorMsg('All fields are required.');
-      return;
-    }
-
-    const isDuplicate = entries.some(
-      (entry) => entry.id === id && id !== editingId
-    );
-
-    if (isDuplicate) {
-      setErrorMsg('ID must be unique!');
-      return;
-    }
-
-    if (editingId !== null) {
-      setEntries(
-        entries.map((entry) =>
-          entry.id === editingId ? { ...newEntry } : entry
-        )
-      );
-      setEditingId(null);
-    } else {
-      setEntries([...entries, newEntry]);
-    }
-
-    setNewEntry({
-      id: '',
-      bookName: '',
-      studentName: '',
-      rollNo: '',
-      returnedDate: ''
-    });
-    setErrorMsg('');
-  };
-
-  const handleEdit = (id) => {
-    const entryToEdit = entries.find((entry) => entry.id === id);
-    if (entryToEdit) {
-      setNewEntry(entryToEdit);
-      setEditingId(id);
-      setErrorMsg('');
+  const fetchEntries = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/getAllReturned`);
+      setEntries(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
   };
 
-  const handleRemove = (id) => {
-    const updated = entries.filter((entry) => entry.id !== id);
-    setEntries(updated);
-    if (editingId === id) {
-      setEditingId(null);
-      setNewEntry({
-        id: '',
-        bookName: '',
-        studentName: '',
-        rollNo: '',
-        returnedDate: ''
-      });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (isEditing) {
+        await axios.put(`${apiUrl}/edit/${formData.id}`, formData);
+      } else {
+        await axios.post(`${apiUrl}/addReturned`, formData);
+      }
+      setFormData({ id: '', bookName: '', studentName: '', rollNo: '', returnedDate: '' });
+      setIsEditing(false);
+      fetchEntries();
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+  };
+
+  const handleEdit = (entry) => {
+    setFormData(entry);
+    setIsEditing(true);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${apiUrl}/delete/${id}`);
+      fetchEntries();
+    } catch (error) {
+      console.error('Error deleting entry:', error);
     }
   };
 
   return (
     <div className="returned-container">
-      {/* Navbar */}
-      <nav className="navbar">
-        <div className="navbar-logo">
-          <h1>Book Return</h1>
-        </div>
-        <ul className="navbar-links">
-          <li><a href="/">Home</a></li>
-          <li><a href="Borrowed">Borrowed Books</a></li>
-        </ul>
-      </nav>
+      <Navbar />
 
       <div className="form-container">
-        <h2>Books Returned</h2>
-
-        {errorMsg && <p className="error-msg">{errorMsg}</p>}
-
-        <div className="add-form">
+        <h2>{isEditing ? 'Edit Returned Book' : 'Add Returned Book'}</h2>
+        <form onSubmit={handleSubmit} className="add-form">
           <input
+            name="id"
             type="text"
             placeholder="ID"
-            value={newEntry.id}
-            onChange={(e) => setNewEntry({ ...newEntry, id: e.target.value })}
+            value={formData.id}
+            onChange={handleChange}
+            required
+            disabled={isEditing}
           />
           <input
+            name="bookName"
             type="text"
             placeholder="Book Name"
-            value={newEntry.bookName}
-            onChange={(e) => setNewEntry({ ...newEntry, bookName: e.target.value })}
+            value={formData.bookName}
+            onChange={handleChange}
+            required
           />
           <input
+            name="studentName"
             type="text"
             placeholder="Student Name"
-            value={newEntry.studentName}
-            onChange={(e) => setNewEntry({ ...newEntry, studentName: e.target.value })}
+            value={formData.studentName}
+            onChange={handleChange}
+            required
           />
           <input
+            name="rollNo"
             type="text"
             placeholder="Roll No"
-            value={newEntry.rollNo}
-            onChange={(e) => setNewEntry({ ...newEntry, rollNo: e.target.value })}
+            value={formData.rollNo}
+            onChange={handleChange}
+            required
           />
           <input
+            name="returnedDate"
             type="date"
-            value={newEntry.returnedDate}
-            onChange={(e) => setNewEntry({ ...newEntry, returnedDate: e.target.value })}
+            value={formData.returnedDate}
+            onChange={handleChange}
+            required
           />
-          <button onClick={handleAddOrUpdate}>
-            {editingId ? 'Update' : 'Add'}
-          </button>
-        </div>
+          <button type="submit">{isEditing ? 'Update' : 'Add'}</button>
+        </form>
       </div>
 
       <div className="entries-container">
         {entries.length === 0 ? (
           <p className="empty-msg">No returned books yet.</p>
         ) : (
-          entries.map((entry) => (
-            <div key={entry.id} className="entry-item">
-              <span>{entry.id}</span>
-              <span>{entry.bookName}</span>
-              <span>{entry.studentName}</span>
-              <span>{entry.rollNo}</span>
-              <span>{entry.returnedDate}</span>
-              <div className="entry-buttons">
-                <button className="edit-btn" onClick={() => handleEdit(entry.id)}>Edit</button>
-                <button className="remove-btn" onClick={() => handleRemove(entry.id)}>Remove</button>
-              </div>
-            </div>
-          ))
+          <table className="entries-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Book Name</th>
+                <th>Student Name</th>
+                <th>Roll No</th>
+                <th>Returned Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((entry) => (
+                <tr key={entry.id}>
+                  <td>{entry.id}</td>
+                  <td>{entry.bookName}</td>
+                  <td>{entry.studentName}</td>
+                  <td>{entry.rollNo}</td>
+                  <td>{entry.returnedDate}</td>
+                  <td>
+                    <button className="edit-btn" onClick={() => handleEdit(entry)}>Edit</button>
+                    <button className="remove-btn" onClick={() => handleDelete(entry.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         )}
       </div>
 
-      {/* Footer */}
-      <footer className="footer">
-        <p>&copy; 2025 Book Return System. All rights reserved.</p>
-      </footer>
+      <Footer />
     </div>
   );
 };
